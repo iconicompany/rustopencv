@@ -13,9 +13,9 @@ ENV PROFILE=${PROFILE:-release}
 
 RUN echo "TARGET=$TARGET PROFILE=$PROFILE"
 
-#COPY ./build ./build
+COPY ./build ./build
 
-#RUN build/dependencies.sh
+RUN build/dependencies.sh
 #RUN build/tesseract.sh
 #RUN build/tesseract_dict.sh
 
@@ -44,4 +44,4 @@ RUN apt-get autoremove && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY ./test ./test
 
-CMD [ "/usr/local/bin/rustopencv" ]
+CMD [ "/usr/local/bin/rustopencv", "test/rustfest.jpg" ]
