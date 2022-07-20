@@ -4,7 +4,6 @@ use anyhow::Result;
 use image::RgbImage;
 use ndarray::{ArrayView3};
 use opencv::{self as cv, prelude::*};
-use tesseract::{Tesseract, TesseractError};
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
     let filename = &args[1];
@@ -69,8 +68,8 @@ fn main() -> Result<()> {
     // it indeed works to convert cv::core::Mat -> ndarray::ArrayView3
     // I'll let it be
     test_image.save("out.png")?;
-    let text = process_image("test/01.PNG").unwrap();
-    println!("result: {}", text);
+    //let text = process_image("test/01.PNG").unwrap();
+    //println!("result: {}", text);
 Ok(())
 }
 trait AsArray {
@@ -97,20 +96,3 @@ RgbImage::from_raw(width as u32, height as u32, raw.to_vec())
 }
 
 
-fn process_image(
-    file_name: &str,
-) -> Result<String, TesseractError> {
-    let lang = "rus";
-
-    let tesseract = Tesseract::new(None, Some(&lang))?;
-
-    let text = tesseract
-        .set_image(file_name)
-        // .set_image_from_mem(&buf.as_slice())
-        .unwrap()
-        .recognize()
-        .unwrap()
-        .get_text()?;
-        Ok(text)
-
-}
